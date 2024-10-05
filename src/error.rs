@@ -56,7 +56,7 @@ impl Error {
             Error::IO(_) => false,
             // Write commands in read-only transactions are deterministic.
             Error::ReadOnly => true,
-            // Write conflicts are determinstic.
+            // Write conflicts are deterministic.
             Error::Serialization => true,
         }
     }

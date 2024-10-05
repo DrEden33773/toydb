@@ -318,7 +318,7 @@ impl Iterator for Lexer<'_> {
             Ok(Some(token)) => Some(Ok(token)),
             // If there's any remaining chars, the lexer didn't recognize them.
             // Otherwise, we're done lexing.
-            Ok(None) => self.chars.peek().map(|c| errinput!("unexpected character {c}")),
+            Ok(None) => self.chars.peek().map(|c| errinput!("unexpected character `{c}`")),
             Err(err) => Some(Err(err)),
         }
     }

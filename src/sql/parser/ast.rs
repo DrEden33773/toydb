@@ -122,8 +122,8 @@ pub enum Literal {
 }
 
 /// To allow using Expressions and Literals in e.g. hashmaps, implement simple
-/// equality and hash for all types, including Null and f64::NAN. This is not
-/// used for expression evaluation (handled by sql::types::Expression), where
+/// equality and hash for all types, including [`Literal::Null`] and [`f64::NAN`]. This is not
+/// used for expression evaluation (handled by [`crate::sql::types::Expression`]), where
 /// these values should not be considered equal to themselves, only in lookups.
 impl PartialEq for Literal {
     fn eq(&self, other: &Self) -> bool {
@@ -167,7 +167,7 @@ pub enum Operator {
 
     Equal(Box<Expression>, Box<Expression>),       // a = b
     GreaterThan(Box<Expression>, Box<Expression>), // a > b
-    GreaterThanOrEqual(Box<Expression>, Box<Expression>), // a != b
+    GreaterThanOrEqual(Box<Expression>, Box<Expression>), // a >= b
     Is(Box<Expression>, Literal),                  // IS NULL or IS NAN
     LessThan(Box<Expression>, Box<Expression>),    // a < b
     LessThanOrEqual(Box<Expression>, Box<Expression>), // a <= b

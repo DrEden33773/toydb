@@ -38,7 +38,7 @@ pub enum Value {
 impl encoding::Value for Value {}
 
 // In code, consider Null and NaN equal, so that we can detect and process these
-// values (e.g. in index lookups, aggregation groups, etc). SQL expressions
+// values (e.g. in index lookups, aggregation groups, etc.). SQL expressions
 // handle them specially to provide their undefined value semantics.
 impl PartialEq for Value {
     fn eq(&self, other: &Self) -> bool {
@@ -117,7 +117,7 @@ impl Value {
             (Float(lhs), Float(rhs)) => Float(lhs + rhs),
             (Null, Integer(_) | Float(_) | Null) => Null,
             (Integer(_) | Float(_), Null) => Null,
-            (lhs, rhs) => return errinput!("can't add {lhs} and {rhs}"),
+            (lhs, rhs) => return errinput!("can't add `{lhs}` and `{rhs}`"),
         })
     }
 
@@ -132,7 +132,7 @@ impl Value {
             (Float(lhs), Float(rhs)) => Float(lhs / rhs),
             (Null, Integer(_) | Float(_) | Null) => Null,
             (Integer(_) | Float(_), Null) => Null,
-            (lhs, rhs) => return errinput!("can't divide {lhs} and {rhs}"),
+            (lhs, rhs) => return errinput!("can't divide `{lhs}` and `{rhs}`"),
         })
     }
 
@@ -149,7 +149,7 @@ impl Value {
             (Float(lhs), Float(rhs)) => Float(lhs * rhs),
             (Null, Integer(_) | Float(_) | Null) => Null,
             (Integer(_) | Float(_), Null) => Null,
-            (lhs, rhs) => return errinput!("can't multiply {lhs} and {rhs}"),
+            (lhs, rhs) => return errinput!("can't multiply `{lhs}` and `{rhs}`"),
         })
     }
 
@@ -170,7 +170,7 @@ impl Value {
             (Float(lhs), Float(rhs)) => Float(lhs.powf(*rhs)),
             (Integer(_) | Float(_), Null) => Null,
             (Null, Integer(_) | Float(_) | Null) => Null,
-            (lhs, rhs) => return errinput!("can't exponentiate {lhs} and {rhs}"),
+            (lhs, rhs) => return errinput!("can't exponentiate `{lhs}` and `{rhs}`"),
         })
     }
 
@@ -189,7 +189,7 @@ impl Value {
             (Float(lhs), Float(rhs)) => Float(lhs % rhs),
             (Integer(_) | Float(_) | Null, Null) => Null,
             (Null, Integer(_) | Float(_)) => Null,
-            (lhs, rhs) => return errinput!("can't take remainder of {lhs} and {rhs}"),
+            (lhs, rhs) => return errinput!("can't take remainder of `{lhs}` and `{rhs}`"),
         })
     }
 
@@ -206,7 +206,7 @@ impl Value {
             (Float(lhs), Float(rhs)) => Float(lhs - rhs),
             (Null, Integer(_) | Float(_) | Null) => Null,
             (Integer(_) | Float(_), Null) => Null,
-            (lhs, rhs) => return errinput!("can't subtract {lhs} and {rhs}"),
+            (lhs, rhs) => return errinput!("can't subtract `{lhs}` and `{rhs}`"),
         })
     }
 
@@ -226,7 +226,7 @@ impl Value {
         *self == Self::Null || matches!(self, Self::Float(f) if f.is_nan())
     }
 
-    /// Normalizes a value in place. Currently normalizes -0.0 and -NAN to 0.0
+    /// Normalizes a value in place. Currently, normalizes -0.0 and -NAN to 0.0
     /// and NAN respectively, which is the canonical value used e.g. in primary
     /// key and index lookups.
     pub fn normalize(&mut self) {
@@ -235,7 +235,7 @@ impl Value {
         }
     }
 
-    /// Normalizes a borrowed value. Currently normalizes -0.0 and -NAN to 0.0
+    /// Normalizes a borrowed value. Currently, normalizes -0.0 and -NAN to 0.0
     /// and NAN respectively, which is the canonical value used e.g. in primary
     /// key and index lookups. Returns a Cow::Owned when changed, to avoid
     /// allocating in the common case where the value doesn't change.
