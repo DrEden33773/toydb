@@ -369,7 +369,7 @@ pub type Row = Vec<Value>;
 /// A row iterator.
 pub type Rows = Box<dyn RowIterator>;
 
-/// A row iterator trait, which requires the iterator to be both clonable and
+/// A row iterator trait, which requires the iterator to be both cloneable and
 /// object-safe. Cloning is needed to be able to reset an iterator back to an
 /// initial state, e.g. during nested loop joins. It has a blanket
 /// implementation for all matching iterators.
