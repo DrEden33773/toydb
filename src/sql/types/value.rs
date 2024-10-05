@@ -40,7 +40,7 @@ impl encoding::Value for Value {}
 // In code, consider Null and NaN equal, so that we can detect and process these
 // values (e.g. in index lookups, aggregation groups, etc). SQL expressions
 // handle them specially to provide their undefined value semantics.
-impl std::cmp::PartialEq for Value {
+impl PartialEq for Value {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Boolean(l), Self::Boolean(r)) => l == r,
@@ -52,9 +52,10 @@ impl std::cmp::PartialEq for Value {
     }
 }
 
-impl std::cmp::Eq for Value {}
+impl Eq for Value {}
 
 impl std::hash::Hash for Value {
+    // noinspection DuplicatedCode
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         core::mem::discriminant(self).hash(state);
         // Normalize to treat +/-0.0 and +/-NAN as equal when hashing.
@@ -165,8 +166,8 @@ impl Value {
             }
             (Integer(lhs), Integer(rhs)) => Float((*lhs as f64).powf(*rhs as f64)),
             (Integer(lhs), Float(rhs)) => Float((*lhs as f64).powf(*rhs)),
-            (Float(lhs), Integer(rhs)) => Float((lhs).powi(*rhs as i32)),
-            (Float(lhs), Float(rhs)) => Float((lhs).powf(*rhs)),
+            (Float(lhs), Integer(rhs)) => Float(lhs.powi(*rhs as i32)),
+            (Float(lhs), Float(rhs)) => Float(lhs.powf(*rhs)),
             (Integer(_) | Float(_), Null) => Null,
             (Null, Integer(_) | Float(_) | Null) => Null,
             (lhs, rhs) => return errinput!("can't exponentiate {lhs} and {rhs}"),

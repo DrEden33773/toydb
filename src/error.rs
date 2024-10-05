@@ -13,7 +13,7 @@ pub enum Error {
     InvalidInput(String),
     /// An IO error.
     IO(String),
-    /// A write was attempted in a read-only transaction.
+    /// A `write` was attempted in a read-only transaction.
     ReadOnly,
     /// A write transaction conflicted with a different writer and lost. The
     /// transaction must be retried.

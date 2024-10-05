@@ -137,6 +137,7 @@ impl Engine for BitCask {
         ScanIterator { inner: self.keydir.range(range), log: &mut self.log }
     }
 
+    // noinspection DuplicatedCode
     fn scan_dyn(
         &mut self,
         range: (std::ops::Bound<Vec<u8>>, std::ops::Bound<Vec<u8>>),

@@ -17,12 +17,12 @@ impl Memory {
 impl Engine for Memory {
     type ScanIterator<'a> = ScanIterator<'a>;
 
-    fn flush(&mut self) -> Result<()> {
+    fn delete(&mut self, key: &[u8]) -> Result<()> {
+        self.data.remove(key);
         Ok(())
     }
 
-    fn delete(&mut self, key: &[u8]) -> Result<()> {
-        self.data.remove(key);
+    fn flush(&mut self) -> Result<()> {
         Ok(())
     }
 
@@ -34,6 +34,7 @@ impl Engine for Memory {
         ScanIterator { inner: self.data.range(range) }
     }
 
+    // noinspection DuplicatedCode
     fn scan_dyn(
         &mut self,
         range: (std::ops::Bound<Vec<u8>>, std::ops::Bound<Vec<u8>>),
