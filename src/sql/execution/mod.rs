@@ -1,4 +1,4 @@
-//! Executes a `Plan` against a `sql::engine::Engine`.
+//! Executes a `Plan` against a [`crate::sql::engine::Engine`].
 
 mod aggregate;
 mod execute;
