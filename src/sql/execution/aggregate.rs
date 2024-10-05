@@ -106,6 +106,7 @@ impl Accumulator {
         }
     }
 
+    #[allow(unused_variables)]
     /// Adds a value to the accumulator.
     fn add(&mut self, value: Value) -> Result<()> {
         // Aggregates ignore NULL values.

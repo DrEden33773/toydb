@@ -2,7 +2,7 @@ use crate::errinput;
 use crate::error::Result;
 
 /// The lexer (lexical analyzer) preprocesses raw SQL strings into a sequence of
-/// lexical tokens (e.g. keyword, number, string, etc), which are passed on to
+/// lexical tokens (e.g. keyword, number, string, etc.), which are passed on to
 /// the SQL parser. In doing so, it strips away basic syntactic noise such as
 /// whitespace, case, and quotes, and performs initial symbol validation.
 pub struct Lexer<'a> {

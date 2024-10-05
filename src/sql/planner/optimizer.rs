@@ -351,7 +351,7 @@ pub fn short_circuit(node: Node) -> Result<Node> {
                 && expressions
                     .iter()
                     .enumerate()
-                    .all(|(i, expr)| matches!(expr, Expression::Column(c) if i == *c)) =>
+                    .all(|(i, expr)| matches!(expr, Column(c) if i == *c)) =>
         {
             *source
         }

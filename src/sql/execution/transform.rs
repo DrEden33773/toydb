@@ -5,6 +5,7 @@ use crate::sql::types::{Expression, Rows, Value};
 
 use itertools::{izip, Itertools as _};
 
+// noinspection DuplicatedCode
 /// Filters the input rows (i.e. WHERE).
 pub fn filter(source: Rows, predicate: Expression) -> Rows {
     Box::new(source.filter_map(move |r| {

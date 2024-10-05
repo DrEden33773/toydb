@@ -52,7 +52,7 @@ pub enum Statement {
 pub enum From {
     /// A table.
     Table { name: String, alias: Option<String> },
-    /// A join of two or more tables (may be nested).
+    /// A join of two or more tables (maybe nested).
     Join { left: Box<From>, right: Box<From>, r#type: JoinType, predicate: Option<Expression> },
 }
 
@@ -125,7 +125,7 @@ pub enum Literal {
 /// equality and hash for all types, including Null and f64::NAN. This is not
 /// used for expression evaluation (handled by sql::types::Expression), where
 /// these values should not be considered equal to themselves, only in lookups.
-impl std::cmp::PartialEq for Literal {
+impl PartialEq for Literal {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Boolean(l), Self::Boolean(r)) => l == r,
@@ -138,9 +138,10 @@ impl std::cmp::PartialEq for Literal {
     }
 }
 
-impl std::cmp::Eq for Literal {}
+impl Eq for Literal {}
 
 impl std::hash::Hash for Literal {
+    // noinspection DuplicatedCode
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         core::mem::discriminant(self).hash(state);
         match self {
@@ -186,6 +187,7 @@ pub enum Operator {
 }
 
 impl Expression {
+    // noinspection DuplicatedCode
     /// Walks the expression tree depth-first, calling a closure for every node.
     /// Halts and returns false if the closure returns false.
     pub fn walk(&self, visitor: &mut impl FnMut(&Expression) -> bool) -> bool {
@@ -228,6 +230,7 @@ impl Expression {
         !self.walk(&mut |expr| !visitor(expr))
     }
 
+    // noinspection DuplicatedCode
     /// Find and collects expressions for which the given closure returns true,
     /// adding them to c. Does not recurse into matching expressions.
     pub fn collect(&self, visitor: &impl Fn(&Expression) -> bool, c: &mut Vec<Expression>) {

@@ -18,7 +18,7 @@
 //! * Linearizability (aka strong consistency): once a client write has been
 //!   accepted, it is visible to all clients -- they never see outdated data.
 //!
-//! * Durability: a write is never lost as long as a majority of nodes remain.
+//! * Durability: a `write` is never lost as long as a majority of nodes remain.
 //!
 //! It does this by electing a single leader node which serves client requests
 //! and replicates writes to other nodes. Requests are executed once they have

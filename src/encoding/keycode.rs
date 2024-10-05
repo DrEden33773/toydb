@@ -105,8 +105,8 @@ impl ser::Serializer for &mut Serializer {
 
     type SerializeSeq = Self;
     type SerializeTuple = Self;
-    type SerializeTupleVariant = Self;
     type SerializeTupleStruct = ser::Impossible<(), Error>;
+    type SerializeTupleVariant = Self;
     type SerializeMap = ser::Impossible<(), Error>;
     type SerializeStruct = ser::Impossible<(), Error>;
     type SerializeStructVariant = ser::Impossible<(), Error>;
@@ -760,7 +760,7 @@ mod tests {
         u32: "00000000" as u32,
         u64_partial: "0000" as u64,
         u128: "00000000000000000000000000000000" as u128,
-        option: "00" as Option::<bool>,
+        option: "00" as Option<bool>,
         string_utf8_invalid: "c0" as String,
         tuple_partial: "0001" as (bool, bool, bool),
         vec_u8: "0000" as Vec<u8>,

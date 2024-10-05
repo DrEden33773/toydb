@@ -66,5 +66,5 @@ impl<V: Value> Value for Option<V> {}
 impl<V: Value> Value for Result<V> {}
 impl<V: Value> Value for Vec<V> {}
 impl<V1: Value, V2: Value> Value for (V1, V2) {}
-impl<V: Value + std::cmp::Eq + std::hash::Hash> Value for HashSet<V> {}
-impl<V: Value + std::cmp::Eq + std::cmp::Ord + std::hash::Hash> Value for BTreeSet<V> {}
+impl<V: Value + Eq + std::hash::Hash> Value for HashSet<V> {}
+impl<V: Value + Eq + Ord + std::hash::Hash> Value for BTreeSet<V> {}

@@ -394,6 +394,7 @@ impl Parser<'_> {
         Ok(ast::From::Table { name, alias })
     }
 
+    // noinspection DuplicatedCode
     // Parses a FROM JOIN type, if present.
     fn parse_from_join(&mut self) -> Result<Option<ast::JoinType>> {
         if self.next_is(Keyword::Join.into()) {

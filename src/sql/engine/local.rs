@@ -247,6 +247,7 @@ impl<E: storage::Engine> super::Transaction for Transaction<E> {
             .collect()
     }
 
+    // noinspection DuplicatedCode
     fn scan(&self, table: &str, filter: Option<Expression>) -> Result<Rows> {
         // TODO: this could be simpler if process_results() implemented Clone.
         let rows = self
