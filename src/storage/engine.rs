@@ -364,7 +364,7 @@ pub mod test {
         b: B::ScanIterator<'a>,
     }
 
-    impl<'a, A: Engine, B: Engine> Iterator for MirrorIterator<'a, A, B> {
+    impl<A: Engine, B: Engine> Iterator for MirrorIterator<'_, A, B> {
         type Item = Result<(Vec<u8>, Vec<u8>)>;
 
         fn next(&mut self) -> Option<Self::Item> {
@@ -375,7 +375,7 @@ pub mod test {
         }
     }
 
-    impl<'a, A: Engine, B: Engine> DoubleEndedIterator for MirrorIterator<'a, A, B> {
+    impl<A: Engine, B: Engine> DoubleEndedIterator for MirrorIterator<'_, A, B> {
         fn next_back(&mut self) -> Option<Self::Item> {
             let a = self.a.next_back();
             let b = self.b.next_back();
