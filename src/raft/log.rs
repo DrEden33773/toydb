@@ -2,8 +2,9 @@ use super::{NodeID, Term};
 use crate::encoding::{self, bincode, Key as _, Value as _};
 use crate::error::Result;
 use crate::storage;
-
+use crate::storage::ScanIterator;
 use serde::{Deserialize, Serialize};
+use std::iter::Iterator as StdIterator;
 
 /// A log index. Starts at 1, indicates no index if 0.
 pub type Index = u64;
@@ -170,7 +171,7 @@ impl Log {
         self.engine.set(&Key::TermVote.encode(), bincode::serialize(&(term, vote)))?;
         // Always fsync, even with Log.fsync = false. Term changes are rare, so
         // this doesn't materially affect performance, and double voting could
-        // lead to multiple leaders and split brain which is really bad.
+        // lead to multiple leaders and split brain which is terrible.
         self.engine.flush()?;
         self.term = term;
         self.vote = vote;
@@ -300,11 +301,11 @@ impl Log {
         let mut scan = self.scan(first.index..=last.index);
         while let Some(entry) = scan.next().transpose()? {
             // [0] is ok, because the scan has the same size as entries.
-            assert!(entry.index == entries[0].index, "index mismatch at {entry:?}");
+            assert_eq!(entry.index, entries[0].index, "index mismatch at {entry:?}");
             if entry.term != entries[0].term {
                 break;
             }
-            assert!(entry.command == entries[0].command, "command mismatch at {entry:?}");
+            assert_eq!(entry.command, entries[0].command, "command mismatch at {entry:?}");
             entries = &entries[1..];
         }
         drop(scan);
@@ -342,16 +343,16 @@ impl Log {
 
 /// A log entry iterator.
 pub struct Iterator<'a> {
-    inner: Box<dyn storage::ScanIterator + 'a>,
+    inner: Box<dyn ScanIterator + 'a>,
 }
 
 impl<'a> Iterator<'a> {
-    fn new(inner: Box<dyn storage::ScanIterator + 'a>) -> Self {
+    fn new(inner: Box<dyn ScanIterator + 'a>) -> Self {
         Self { inner }
     }
 }
 
-impl<'a> std::iter::Iterator for Iterator<'a> {
+impl std::iter::Iterator for Iterator<'_> {
     type Item = Result<Entry>;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -370,6 +371,7 @@ mod tests {
     use itertools::Itertools as _;
     use regex::Regex;
     use std::fmt::Write as _;
+    use std::iter::Iterator;
     use std::{error::Error, result::Result};
     use test_each_file::test_each_path;
 

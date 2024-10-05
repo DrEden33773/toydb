@@ -250,15 +250,15 @@ pub mod test {
     impl<E: Engine> Engine for Emit<E> {
         type ScanIterator<'a> = E::ScanIterator<'a> where E: 'a;
 
-        fn flush(&mut self) -> Result<()> {
-            self.inner.flush()?;
-            self.tx.send(Operation::Flush)?;
-            Ok(())
-        }
-
         fn delete(&mut self, key: &[u8]) -> Result<()> {
             self.inner.delete(key)?;
             self.tx.send(Operation::Delete { key: key.to_vec() })?;
+            Ok(())
+        }
+
+        fn flush(&mut self) -> Result<()> {
+            self.inner.flush()?;
+            self.tx.send(Operation::Flush)?;
             Ok(())
         }
 
