@@ -14,7 +14,7 @@ use std::collections::{BTreeMap, BTreeSet};
 /// statements. All engine access is transactional with snapshot isolation.
 pub trait Engine<'a>: Sized {
     /// The engine's transaction type. This provides both row-level CRUD
-    /// operations as well as transactional access to the schema catalog. It
+    /// operations and transactional access to the schema catalog. It
     /// can't outlive the engine.
     type Transaction: Transaction + Catalog + 'a;
 
